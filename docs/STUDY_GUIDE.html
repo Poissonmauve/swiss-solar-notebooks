@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Midterm Study Guide</title>
+<style>
+  :root {
+    --bg: #ffffff; --surface: #f4f5f7; --ink: #111418; --ink2: #3b4048; --muted: #6b7280;
+    --blue: #005dc4; --lblue: #0790c9; --red: #d0021b; --green: #14804a; --rule: #dde1e6;
+    --good-bg: #e8f5ee; --bad-bg: #fdecee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111418; --surface: #1b1f25; --ink: #eef0f3; --ink2: #c7ccd3; --muted: #9aa1ab;
+      --blue: #5ea8ff; --lblue: #4cc3f0; --red: #ff6b7a; --green: #4cc38a; --rule: #2c323a;
+      --good-bg: #133324; --bad-bg: #3a1a1f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 -apple-system, "Segoe UI", Arial, sans-serif; }
+  .bar { height: 6px; background: linear-gradient(90deg, #0790c9 0 53%, #005dc4 53% 84%, #fe060e 84%); }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1 { font-size: 34px; line-height: 1.2; margin: 8px 0 6px; font-weight: 600; }
+  h2 { font-size: 25px; margin: 56px 0 10px; padding-top: 12px; border-top: 1px solid var(--rule); font-weight: 600; }
+  h3 { font-size: 19px; margin: 28px 0 6px; font-weight: 600; }
+  .kicker { color: var(--red); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+  .lead { font-size: 19px; color: var(--ink2); }
+  p, li { color: var(--ink2); }
+  b, strong { color: var(--ink); }
+  .box { background: var(--surface); border-radius: 10px; padding: 16px 18px; margin: 16px 0; }
+  .box.key { border-left: 4px solid var(--blue); }
+  .box.warn { border-left: 4px solid var(--red); }
+  .box h4 { margin: 0 0 6px; font-size: 15px; text-transform: uppercase; letter-spacing: .04em; color: var(--blue); }
+  .box.warn h4 { color: var(--red); }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 15px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { color: var(--muted); font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: .03em; }
+  .tablewrap { overflow-x: auto; }
+  .num { color: var(--blue); font-weight: 600; }
+  nav.toc { columns: 2; column-gap: 32px; font-size: 15px; margin: 18px 0; }
+  nav.toc a { color: var(--blue); text-decoration: none; display: block; padding: 2px 0; }
+  code { background: var(--surface); padding: 1px 5px; border-radius: 4px; font-size: 15px; }
+  .yxz { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .yxz div { background: var(--surface); border-radius: 10px; padding: 14px; }
+  .yxz .l { font-size: 34px; font-weight: 600; line-height: 1; }
+  @media (max-width: 640px) { .yxz { grid-template-columns: 1fr; } nav.toc { columns: 1; } h1 { font-size: 28px; } }
+  /* quiz */
+  .q { background: var(--surface); border-radius: 10px; padding: 16px 18px; margin: 14px 0; }
+  .q .stem { font-weight: 600; color: var(--ink); margin-bottom: 10px; }
+  .q button.opt { display: block; width: 100%; text-align: left; margin: 6px 0; padding: 10px 12px; border-radius: 8px;
+    border: 1px solid var(--rule); background: var(--bg); color: var(--ink); font: inherit; font-size: 16px; cursor: pointer; }
+  .q button.opt:hover:not(:disabled) { border-color: var(--blue); }
+  .q button.opt:disabled { cursor: default; }
+  .q button.right { background: var(--good-bg); border-color: var(--green); }
+  .q button.wrong { background: var(--bad-bg); border-color: var(--red); }
+  .q .why { display: none; margin-top: 10px; font-size: 15.5px; color: var(--ink2); }
+  .q.done .why { display: block; }
+  .score { position: sticky; top: 0; background: var(--bg); padding: 10px 0; border-bottom: 1px solid var(--rule); font-weight: 600; z-index: 2; }
+  .reveal { margin-top: 8px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--blue); background: transparent; color: var(--blue); font: inherit; font-size: 15px; cursor: pointer; }
+  .model { display: none; margin-top: 10px; }
+  .model.show { display: block; }
+  .reset { padding: 8px 14px; border-radius: 8px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; margin-left: 12px; }
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<main>
+
+<div class="kicker">MGT-499 · Midterm · Study guide</div>
+<h1>Everything we did for the midterm, explained from zero</h1>
+<p class="lead">Read it top to bottom once (about 40 minutes), then do the quiz at the end. Every number here comes from our notebook <code>midterm_eda.ipynb</code>.</p>
+
+<nav class="toc">
+  <a href="#s1">1. The study in 30 seconds</a>
+  <a href="#s2">2. Basic words you need</a>
+  <a href="#s3">3. Y, X and Z, and why these</a>
+  <a href="#s4">4. Where the data comes from</a>
+  <a href="#s5">5. How we cleaned it</a>
+  <a href="#s6">6. Why logs (and other transformations)</a>
+  <a href="#s7">7. Univariate analysis: each variable alone</a>
+  <a href="#s8">8. Bivariate analysis: X and Y together</a>
+  <a href="#s9">9. Statistics basics we use</a>
+  <a href="#s10">10. Heterogeneity: adding Z</a>
+  <a href="#s11">11. Why it is not (yet) causal</a>
+  <a href="#s12">12. The literature and our gap</a>
+  <a href="#s13">13. What we will do for the final</a>
+  <a href="#s14">14. Cheat sheet of numbers</a>
+  <a href="#quiz">15. Quiz: check yourself</a>
+</nav>
+
+<!-- ======================================================= 1 -->
+<h2 id="s1">1. The study in 30 seconds</h2>
+<p>In 2023, electricity for Swiss households suddenly became much more expensive, because of the European energy crisis of 2022. But the increase was <b>very different from one commune to the next</b>: some communes paid almost nothing more, others paid over 20 centimes more per kilowatt-hour.</p>
+<p>We ask: <b>did communes where electricity got more expensive install more solar panels?</b> If yes, it suggests households react to electricity prices, which matters for energy policy.</p>
+<div class="box key">
+  <h4>What we found (so far)</h4>
+  Communes with bigger price increases had faster growth in new solar installations in 2023–24, even when we compare only communes in the same canton. Before the shock, there was no such pattern. But we <b>cannot yet say the price caused it</b>, because the price increases were not random (more in section 11).
+</div>
+<p>The midterm is the <b>exploratory</b> part (EDA = exploratory data analysis): describe the data, show patterns, and list what could make those patterns misleading. The causal analysis comes in the final.</p>
+
+<!-- ======================================================= 2 -->
+<h2 id="s2">2. Basic words you need</h2>
+<div class="tablewrap"><table>
+<tr><th>Word</th><th>Meaning, simply</th></tr>
+<tr><td><b>Commune</b></td><td>A Swiss municipality (Gemeinde). There are 2,110 in 2026. Our unit of observation: one row = one commune.</td></tr>
+<tr><td><b>PV / solar installation</b></td><td>A photovoltaic system: solar panels that produce electricity. "Installation" = one system put into service.</td></tr>
+<tr><td><b>kWh, ct/kWh</b></td><td>Kilowatt-hour is a unit of electricity. A Swiss household uses a few thousand kWh per year. Prices are in centimes (ct) per kWh. +5 ct/kWh on 4,500 kWh ≈ +225 CHF per year.</td></tr>
+<tr><td><b>Tariff</b></td><td>The price per kWh the household pays. It has parts: energy (the electricity itself), grid fees (using the network), and taxes/levies.</td></tr>
+<tr><td><b>Grid operator (utility)</b></td><td>The local company that delivers electricity and sets the tariff. Switzerland has about 600. A commune is served by one or a few of them. Neighbouring communes can have different operators, so different prices.</td></tr>
+<tr><td><b>Feed-in tariff</b></td><td>What the operator pays you for the solar electricity you send back to the grid. Also set by the local operator.</td></tr>
+<tr><td><b>ElCom</b></td><td>The federal electricity regulator. It publishes every operator's tariffs.</td></tr>
+<tr><td><b>H4 profile</b></td><td>ElCom's "standard household": a 5-room flat using 4,500 kWh per year. Comparing everyone on the same profile makes tariffs comparable.</td></tr>
+<tr><td><b>Canton</b></td><td>One of the 26 Swiss states. Cantons have their own subsidies and building rules for solar.</td></tr>
+<tr><td><b>Owner-occupier</b></td><td>Someone who lives in a home they own (as opposed to a tenant who rents).</td></tr>
+</table></div>
+<div class="box key">
+  <h4>Why a panel pays off through two prices</h4>
+  If you have panels, (1) you buy less electricity, so you save the <b>retail tariff</b> on every kWh you produce and use yourself, and (2) you get the <b>feed-in tariff</b> for what you send to the grid. When the retail tariff jumps, panels pay off faster. That is the mechanism we test.
+</div>
+
+<!-- ======================================================= 3 -->
+<h2 id="s3">3. Y, X and Z, and why these</h2>
+<p>The course asks for three variables: an outcome, a main explanatory variable, and a variable for heterogeneity (does the effect differ between groups?).</p>
+<div class="yxz">
+  <div><div class="l" style="color:var(--lblue)">Y</div><b>Outcome</b><br>New solar installations per commune and year.</div>
+  <div><div class="l" style="color:var(--blue)">X</div><b>Main explanatory</b><br>The 2023 increase in the household tariff (2023 minus 2022), in ct/kWh.</div>
+  <div><div class="l" style="color:var(--red)">Z</div><b>Heterogeneity</b><br>Share of dwellings lived in by their owner (census 2000).</div>
+</div>
+<h3>Why these choices?</h3>
+<ul>
+  <li><b>Y = number of installations</b>: it directly measures adoption, the decision we care about. It exists for every commune and every year.</li>
+  <li><b>X = the change, not the level</b>: a commune that always had expensive electricity is different in many ways (rural, small utility…). We look at the <i>shock</i>: how much the price jumped. Combined with looking at growth in Y, this compares each commune with its own past, so permanent differences between communes drop out.</li>
+  <li><b>X = 2023 minus 2022</b>: 2023 is the year of the big jump. The 2023 tariffs were published in August 2022.</li>
+  <li><b>Z = owner share</b>: to put panels on a roof you need to own it. Tenants depend on the landlord. So we expect communes with many owners to react more strongly to prices. That is the heterogeneity we test.</li>
+</ul>
+<div class="box key">
+  <h4>Why it is a "causal" question</h4>
+  We want to know if the price increase <i>caused</i> more installations, not just whether both happened. "Did X cause Y?" is causal; "what was the average tariff?" would only be descriptive. The course requires a causal question.
+</div>
+
+<!-- ======================================================= 4 -->
+<h2 id="s4">4. Where the data comes from</h2>
+<div class="tablewrap"><table>
+<tr><th>Source</th><th>What it gives us</th><th>Why this one</th></tr>
+<tr><td><b>SFOE plant register</b> (Federal Office of Energy)</td><td>Every power plant in Switzerland, with type, power (kW), commissioning date, coordinates. Gives <b>Y</b>.</td><td>Official, complete, free. Every grid-connected solar plant is in it.</td></tr>
+<tr><td><b>ElCom tariffs</b></td><td>The tariff of every operator in every commune, every year, by household profile. Gives <b>X</b>.</td><td>The official source; the same standard profile everywhere.</td></tr>
+<tr><td><b>FSO census 2000</b> (Federal Statistical Office)</td><td>Dwellings by type of occupant per commune. Gives <b>Z</b>.</td><td>The latest data on owners that exists for every commune.</td></tr>
+<tr><td>FSO commune register</td><td>All commune mergers since 2010.</td><td>To put every source on the same 2026 communes.</td></tr>
+<tr><td>FSO population</td><td>Population and canton of each commune.</td><td>To know the canton and the size.</td></tr>
+<tr><td>swisstopo boundaries &amp; postcodes</td><td>The shape of every commune, and which commune each postcode belongs to.</td><td>To place each solar plant in a commune, and draw maps.</td></tr>
+<tr><td><b>VESE pvtarif</b> (licensed, team use only)</td><td>Feed-in tariffs per operator.</td><td>To check whether feed-in tariffs moved with X (a possible confounder).</td></tr>
+</table></div>
+
+<!-- ======================================================= 5 -->
+<h2 id="s5">5. How we cleaned it (and why each step)</h2>
+<ol>
+  <li><b>One commune code for everyone.</b> Swiss communes merge almost every year, and each dataset uses the commune numbers of its own year. We follow the merger register to the commune that exists in 2026. <i>Why:</i> otherwise the same place would appear under different numbers and we could not join the datasets.</li>
+  <li><b>Keep only solar plants</b> from the register (337,455 of them).</li>
+  <li><b>Place each plant in a commune.</b> 99.3% using their coordinates: we check which commune's shape contains the point. The rest using their postcode. <i>Why:</i> the register doesn't directly give a reliable commune number for every plant.</li>
+  <li><b>Build X</b>: for each commune, average the H4 tariff of its operators, then 2023 − 2022.</li>
+  <li><b>Build Z</b>: owner-occupied dwellings ÷ all occupied dwellings.</li>
+  <li><b>Choose the sample</b>: communes with both a 2022 and a 2023 tariff → <span class="num">2,098 of 2,110</span>. The 12 dropped have no 2022 tariff (8 in Graubünden). Years 2015–2025 (2026 is incomplete: our register extract is from September 2026).</li>
+  <li><b>Count</b> new installations per commune and year → <span class="num">297,633</span> plants, 23,078 commune-years (2,098 communes × 11 years).</li>
+</ol>
+<div class="box warn">
+  <h4>Sample bias, in one line</h4>
+  Our sample is almost all communes (2,098 of 2,110), so the bias is small. But the 12 dropped are mostly in one canton (Graubünden), and Z is missing for 35 communes that merged before 2010 (the merger register starts in 2010, so we cannot match them).
+</div>
+
+<!-- ======================================================= 6 -->
+<h2 id="s6">6. Why logs (and other transformations)</h2>
+<h3>The problem: Y is very skewed</h3>
+<p>Most communes add a handful of solar systems per year; a few cities add hundreds. In 2023–24 the <b>median</b> commune added 18.5 per year, but the <b>mean</b> is 28.4 and the biggest adds 484. When a few big values pull the mean up like this, we call the variable <b>skewed</b>.</p>
+<h3>Why raw differences mislead</h3>
+<div class="tablewrap"><table>
+<tr><th>Commune</th><th>Before (per year)</th><th>After</th><th>Raw change</th><th>Relative change</th></tr>
+<tr><td>Village</td><td>2</td><td>6</td><td>+4</td><td>×3 (tripled)</td></tr>
+<tr><td>City</td><td>200</td><td>260</td><td>+60</td><td>×1.3</td></tr>
+</table></div>
+<p>In raw numbers the city "grew more" (+60 vs +4), only because it is big. Relatively, the village grew much more. We care about how strongly each commune <i>reacted</i>, so we want <b>relative</b> growth.</p>
+<h3>What the log does</h3>
+<p>The (natural) logarithm turns ratios into differences: log(after) − log(before) ≈ the percentage change. So <b>a difference in logs measures relative growth</b>, and a village and a city become comparable.</p>
+<h3>Why log(1 + n) and not log(n)</h3>
+<p>Some communes had <b>zero</b> installations in a year, and log(0) does not exist. Adding 1 fixes that: log(1 + 0) = 0. Hence our growth measure:</p>
+<div class="box key">
+  <h4>Our Y for the analysis</h4>
+  <b>growth = log(1 + installations per year in 2023–24) − log(1 + installations per year in 2017–21)</b><br>
+  Village: log(7) − log(3) = 0.85. City: log(261) − log(201) = 0.26. Now the village correctly shows the bigger reaction.
+</div>
+<h3>What a "log point" is</h3>
+<p>A difference of 0.24 in logs is called 0.24 "log points". To turn it into a percentage: e<sup>0.24</sup> − 1 ≈ 0.27, so about <b>27%</b>. For small values, log points ≈ percent (0.05 ≈ 5%). Because of the "+1", our percentages are approximate, so we say "roughly 27%".</p>
+<h3>Why 2017–21 and 2023–24, and not 2022?</h3>
+<ul>
+  <li><b>2017–21</b> = five normal years before the crisis. Averaging several years smooths out random ups and downs.</li>
+  <li><b>2023–24</b> = the two years after the new tariffs. Two years because the register records the <i>connection</i> date, which comes months after the decision; and installers had waiting lists.</li>
+  <li><b>2022 left out</b>: the 2023 tariffs were published in August 2022, so 2022 is half "before", half "after". Including it would blur the comparison.</li>
+</ul>
+<h3>The other transformations</h3>
+<ul>
+  <li><b>X stays in levels (ct/kWh), no log.</b> It isn't very skewed, and some communes even had a small decrease (minimum −0.5); you can't take the log of a negative number.</li>
+  <li><b>Outliers in X are kept.</b> 17 communes had increases above 25 ct (up to 43). We checked: they are real, small local utilities, not errors. Deleting real data would bias the result. In the canton chart we only <i>draw</i> the lines up to 25 ct to keep it readable.</li>
+  <li><b>Z is split at its median (56%)</b> into "below" and "above" for a simple first comparison. In the final we will use it as a continuous variable.</li>
+</ul>
+
+<!-- ======================================================= 7 -->
+<h2 id="s7">7. Univariate analysis: each variable alone</h2>
+<p>The course asks, for each variable: what kind of variable is it, does it need transforming, and how does it behave over <b>time</b> and over <b>space</b>.</p>
+<div class="tablewrap"><table>
+<tr><th></th><th>Nature</th><th>Over time</th><th>Over space</th><th>Distribution</th></tr>
+<tr><td><b>Y</b></td><td>Count (0, 1, 2, …), skewed, zeros</td><td>Line chart: slow rise, <span class="num">+165%</span> from 2021 to 2023 (23,291 → 61,682), high in 2024, fall in 2025</td><td>Map of growth: positive in <span class="num">98%</span> of communes</td><td>Histogram: most communes small, long right tail</td></tr>
+<tr><td><b>X</b></td><td>Continuous (ct/kWh)</td><td>Tariff lines by thirds (slide 12): flat until 2022, jump in 2023</td><td>Map: dark and light communes side by side; canton chart: big spread inside each canton</td><td>Median <span class="num">+5.1 ct</span>, from −0.5 to 43</td></tr>
+<tr><td><b>Z</b></td><td>Share (0 to 1)</td><td>Fixed: one census (2000)</td><td>Map: more owners in rural/mountain communes, fewer in cities</td><td>Bell-shaped, median <span class="num">56%</span>; most communes 40–70%</td></tr>
+</table></div>
+<h3>Why each chart type</h3>
+<ul>
+  <li><b>Line chart</b> for things over time (installations per year).</li>
+  <li><b>Histogram</b> to see the shape of a distribution (is it skewed? where is the middle?). Our Y histogram has its last bar at "95", which means 95 and above.</li>
+  <li><b>Map</b> to see patterns in space (clusters? neighbours different?).</li>
+  <li><b>Summary table</b> (slide 7): N (how many), mean, SD (standard deviation: how spread out), min, median, max.</li>
+</ul>
+<h3>Two key facts about X</h3>
+<ul>
+  <li><b>74% of the variation is within cantons.</b> If you subtract each canton's average increase from every commune, 74% of the variance is still there. Most of the differences are between communes <i>in the same canton</i>, not between cantons. That's great for us: we can compare within cantons and still have lots of variation.</li>
+  <li><b>87% of the increase was the energy part</b> of the price, not grid fees. The crisis was about the cost of electricity itself. (This matters for reverse causality, section 11.)</li>
+</ul>
+<div class="box key">
+  <h4>Mean vs median</h4>
+  The <b>median</b> is the middle value: half the communes are below, half above. The <b>mean</b> is the average. For skewed data, a few huge values pull the mean up, so the median describes the "typical" commune better. That's why we often quote medians.
+</div>
+
+<!-- ======================================================= 8 -->
+<h2 id="s8">8. Bivariate analysis: X and Y together</h2>
+<h3>8a. The thirds (slide 12)</h3>
+<p>We sort communes by X and cut them into three groups of about equal size: <b>low shock</b> (average +2.0 ct), <b>middle</b> (+5.9 ct), <b>high shock</b> (+12.3 ct). Then we follow each group over time.</p>
+<p><b>The index (2021 = 100).</b> The groups have different sizes, so their raw totals aren't comparable. For each group we add up installations per year and divide by that group's 2021 total, ×100. Example: if a group had 1,000 installations in 2021 and 2,900 in 2023, its 2023 index is 290, meaning 2.9 times its 2021 level.</p>
+<ul>
+  <li>Before 2022: the three lines move together (similar trends).</li>
+  <li>2023: high-shock third <span class="num">290</span>, middle 265, low-shock 238.</li>
+  <li>2024: the low-shock communes got their increase a year later (+5.4 ct vs +1.1 for high), so the tariff gap halved (8.6 → 4.3 ct).</li>
+</ul>
+<div class="box warn">
+  <h4>Limit of this chart</h4>
+  The index <i>adds up</i> installations, so big communes (cities) weigh much more. That's why we also do the commune-by-commune analysis, where every commune counts once.
+</div>
+
+<h3>8b. Commune by commune, within cantons (slide 13)</h3>
+<p><b>Why "within cantons"?</b> Cantons have their own solar subsidies, building rules, and climate. If one canton had big tariff increases <i>and</i> generous subsidies, we'd wrongly credit the tariff. So we only compare communes with others <b>in the same canton</b>.</p>
+<p><b>How:</b> for each commune, subtract its canton's average X from its X, and its canton's average growth from its growth. Now each commune is measured "relative to its canton". Example: in a canton where the average increase is 3 ct, a commune with 8 ct gets +5. Then we fit a straight line through all communes.</p>
+<p>(This is exactly the same as a regression with "canton fixed effects", a term you might hear in Q&A.)</p>
+<p><b>The chart:</b> each light dot is a commune; the dark dots are averages of 20 equal-size groups (a "binned scatter": it makes the pattern visible through the cloud); the red line is the fitted line.</p>
+<div class="box key">
+  <h4>The result</h4>
+  Slope = <b>0.24</b>: within the same canton, <b>+10 ct/kWh</b> of increase goes with <b>0.24 log points</b> faster growth, roughly <b>27%</b>. 95% confidence interval: <b>0.20 to 0.28</b>.<br>
+  Placebo (same test, before the shock): <b>0.02</b>, interval <b>−0.03 to 0.07</b>, which is zero.
+</div>
+
+<!-- ======================================================= 9 -->
+<h2 id="s9">9. Statistics basics we use</h2>
+<h3>Correlation (r)</h3>
+<p>A number from −1 to +1 saying how much two variables move together in a straight line. +1: perfectly together; 0: no linear link; −1: perfectly opposite. Our examples: retail increase vs feed-in change r = <b>0.79</b> (strong); X vs solar already installed in 2021 r = <b>0.03</b> (none); X vs 2022 tariff level r = <b>−0.26</b> (weak, negative).</p>
+<h3>Slope</h3>
+<p>How much Y changes, on average, when X goes up by one unit. We express it per +10 ct.</p>
+<h3>Confidence interval (CI)</h3>
+<p>A range of plausible values for the true slope, given the noise in the data. "95% CI 0.20 to 0.28" means: our best guess is 0.24, and values from 0.20 to 0.28 are consistent with the data. Because <b>0 is not in the interval</b>, the pattern is very unlikely to be pure chance. (That's what "statistically significant" means.)</p>
+<h3>Clustering by operator</h3>
+<p>All communes served by the same operator got the <b>same</b> price shock, so they are not 2,098 independent experiments; it's closer to <b>495 independent shocks</b> (495 main operators). If we ignored that, the CI would be too narrow (too confident). "Clustered by operator" widens the CI to account for it.</p>
+<h3>Placebo test</h3>
+<p>A fake test where the answer should be "nothing". We take the <b>same</b> X and test whether it predicts growth <b>before</b> the shock (2017–18 → 2020–21), when nobody knew about 2023. If high-shock communes were already growing faster for other reasons, the placebo would be positive. It is 0.02 (zero), so our pattern is <b>not just an old trend</b>. This is a key check.</p>
+<h3>Variance</h3>
+<p>A measure of how spread out values are. "74% of the variance is within cantons" means most of the spread in X is between communes in the same canton.</p>
+
+<!-- ======================================================= 10 -->
+<h2 id="s10">10. Heterogeneity: adding Z (slide 14)</h2>
+<p><b>Heterogeneity</b> = does the relationship differ between types of communes? We split communes at the median owner share (56%) and redo the thirds chart in each half (low vs high shock).</p>
+<ul>
+  <li>Below the median: 2023 index high shock <b>280</b> vs low <b>241</b>.</li>
+  <li>Above the median (more owners): <b>308</b> vs <b>237</b>: a bigger gap, as we expected.</li>
+</ul>
+<div class="box warn">
+  <h4>Why it's only "descriptive"</h4>
+  <ol style="margin:4px 0 0 18px; padding:0">
+    <li>Above the median, the high-shock group already led in <b>2022</b> (160 vs 139), before the new tariffs applied. That could be anticipation (tariffs were public from August 2022) or an earlier difference.</li>
+    <li>Owner share moves with other things: smaller communes (r = −0.62 with population) and more single-family houses (r = 0.41). So "more owners" might really mean "more houses with roofs".</li>
+    <li>It's a median split, not a test with an interval.</li>
+  </ol>
+</div>
+
+<!-- ======================================================= 11 -->
+<h2 id="s11">11. Why it is not (yet) causal</h2>
+<p><b>Correlation is not causation.</b> To say the price <i>caused</i> more solar, the price increase should be "as good as random", i.e. unrelated to anything else that affects solar. The course asks three questions:</p>
+<h3>Is there something else? (endogeneity / confounders)</h3>
+<p><b>Endogeneity</b> = X is linked to other things that also affect Y, so we can't tell which one did it. A <b>confounder</b> is such an "other thing". Ours:</p>
+<ul>
+  <li><b>Operators chose the increases.</b> Large operators (main operator in 10+ communes) raised less: 5.8 vs 8.5 ct. Large and small utilities may serve different kinds of communes.</li>
+  <li><b>Feed-in tariffs moved too</b> (r = 0.79 with X). The same operators raised what they pay for solar power. So maybe people reacted to the feed-in tariff, not the retail price. For now, our 0.24 is the reaction to the whole "price package".</li>
+  <li><b>Everyone was treated.</b> Every commune lived through the crisis and the media coverage; there is no untouched control group. And low-shock communes caught up in 2024. So we measure a <b>short-run difference</b> between more and less affected communes, not the total effect of the crisis.</li>
+  <li><b>Local factors we don't observe</b>: communal subsidies, installer waiting lists.</li>
+</ul>
+<h3>Is it the reverse? (reverse causality)</h3>
+<p>Could more solar have <i>caused</i> higher tariffs? In theory yes: people with panels buy fewer kWh, so operators must spread grid costs over fewer kWh, raising grid fees. But:</p>
+<ul>
+  <li>2023 tariffs were fixed in August 2022, <b>before</b> the installations we count.</li>
+  <li>X is unrelated to how much solar a commune already had in 2021 (r = 0.03).</li>
+  <li>87% of the increase was the <b>energy</b> part, not grid fees.</li>
+</ul>
+<p>So reverse causality looks unlikely, though these checks don't fully rule it out.</p>
+<h3>Can we extrapolate? (external validity)</h3>
+<ul>
+  <li>One <b>exceptional</b> shock during a crisis with lots of media attention: normal small price changes might have smaller effects.</li>
+  <li><b>Commune-level</b> data: we see averages, not individual households. We can't say owners themselves reacted more (that would be the "ecological fallacy").</li>
+  <li>Y counts all plants: 12% are above 30 kW (farms, firms), not only homes.</li>
+  <li>Sample bias: 12 communes dropped; Z missing for 35.</li>
+</ul>
+<h3>Why the 2025 drop is not explained</h3>
+<p>Installations fell in 2025. We haven't tested why. Possible reasons: tariffs came down in 2025, feed-in tariffs may have fallen, some 2025 plants may not be registered yet. Don't claim more than that.</p>
+
+<!-- ======================================================= 12 -->
+<h2 id="s12">12. The literature and our gap</h2>
+<div class="tablewrap"><table>
+<tr><th>Study</th><th>What / how</th><th>Found</th><th>Limit for us</th></tr>
+<tr><td><b>Feger, Pavanini &amp; Radulescu (2022)</b>, Review of Economic Studies</td><td>Structural (economic) model of electricity demand and solar adoption; ~165,000 Swiss households (Bern-area utilities), 2008–2014.</td><td>Higher electricity prices raise adoption; prices are more cost-efficient than installation subsidies. Adopters are mostly richer homeowners.</td><td>Very little price variation in their data.</td></tr>
+<tr><td><b>Kiso, Chan &amp; Arino (2022)</b>, J. of Environmental Economics and Management</td><td>Japan after Fukushima (2011): nuclear plants shut, prices rose. Panel of 47 prefectures, 2009–2014.</td><td>Higher prices raised solar on <b>existing</b> homes, barely on new builds.</td><td>Only 10 regional utilities; prices rose slowly over ~3 years.</td></tr>
+<tr><td><b>Filippini &amp; Garnache (2026)</b>, ETH working paper</td><td>Norway in the 2022 crisis: expensive south vs cheaper north.</td><td>Installations surged in the south; buyers put a lot of weight on current prices.</td><td>All their variation comes from one north–south border.</td></tr>
+</table></div>
+<div class="box key">
+  <h4>Our gap</h4>
+  Every study had <b>one narrow source</b> of price variation. We found no solar study that uses the 2023 Swiss tariff jump: one sudden shock, passed on by hundreds of operators by different amounts, which lets us compare communes <b>within the same canton</b>. Honest caveat: our shock also came with feed-in changes and a crisis everyone saw.
+</div>
+<p><b>Structural model</b> (for Q&amp;A): a model built from economic theory (how households decide), fitted to data, then used to simulate "what if" policies. <b>Natural experiment</b>: an event outside researchers' control that creates variation, like a disaster or a sudden price change.</p>
+
+<!-- ======================================================= 13 -->
+<h2 id="s13">13. What we will do for the final</h2>
+<ul>
+  <li><b>Regression within cantons, year by year</b> (an "event study"): compare high- and low-shock communes every year, to see when the gap opens and check there was no gap before (pre-trends) or anticipation in 2022.</li>
+  <li><b>Neighbouring communes</b> with different operators: compare communes right next to each other, which share almost everything except the operator.</li>
+  <li><b>Z as a continuous variable</b>, with better ownership data if possible.</li>
+  <li><b>Feed-in tariffs</b>: try to separate the effect of the retail price from the feed-in price.</li>
+</ul>
+<p>The basic idea behind this is <b>difference-in-differences</b>: compare the change over time (before → after) between more and less affected communes. It works if both groups would have followed the same trend without the shock ("parallel trends"). Our placebo is a first check of that.</p>
+
+<!-- ======================================================= 14 -->
+<h2 id="s14">14. Cheat sheet of numbers</h2>
+<div class="tablewrap"><table>
+<tr><th>Number</th><th>Meaning</th></tr>
+<tr><td class="num">35 TWh</td><td>Swiss legal target: renewable electricity excluding hydropower in 2035 (vote of June 2024)</td></tr>
+<tr><td class="num">+28% / +5.1 ct</td><td>Median 2023 tariff increase across communes</td></tr>
+<tr><td class="num">495</td><td>Main operators of our communes (≈ number of independent shocks)</td></tr>
+<tr><td class="num">337,455 → 297,633</td><td>Solar plants in the register → in our sample, 2015–2025</td></tr>
+<tr><td class="num">99.3%</td><td>Plants placed by coordinates</td></tr>
+<tr><td class="num">2,098 of 2,110</td><td>Communes kept</td></tr>
+<tr><td class="num">5.2 → 18.5</td><td>Median installations per year, 2017–21 → 2023–24</td></tr>
+<tr><td class="num">+165%</td><td>National installations 2021 → 2023</td></tr>
+<tr><td class="num">98%</td><td>Communes with positive growth</td></tr>
+<tr><td class="num">56% / 35</td><td>Median owner share / communes without Z</td></tr>
+<tr><td class="num">74%</td><td>Share of X's variance within cantons</td></tr>
+<tr><td class="num">87%</td><td>Share of the increase that was the energy part</td></tr>
+<tr><td class="num">17</td><td>Communes above 25 ct, kept</td></tr>
+<tr><td class="num">+2.0 / +5.9 / +12.3</td><td>Average increase in low / middle / high third</td></tr>
+<tr><td class="num">238 / 265 / 290</td><td>2023 installation index (2021 = 100)</td></tr>
+<tr><td class="num">0.24 (0.20–0.28)</td><td>Within-canton slope per +10 ct ≈ +27% growth</td></tr>
+<tr><td class="num">0.02 (−0.03–0.07)</td><td>Placebo before the shock</td></tr>
+<tr><td class="num">308 vs 237</td><td>2023 index high vs low shock, above-median owners (280 vs 241 below)</td></tr>
+<tr><td class="num">160 vs 139</td><td>Same, in 2022: gap already there</td></tr>
+<tr><td class="num">5.8 vs 8.5 ct</td><td>Increase with large vs other operators</td></tr>
+<tr><td class="num">r = 0.79</td><td>Retail increase vs feed-in change</td></tr>
+<tr><td class="num">8.6 → 4.3 ct</td><td>Tariff gap high − low third, 2023 → 2024</td></tr>
+<tr><td class="num">r = 0.03</td><td>X vs solar already installed in 2021</td></tr>
+<tr><td class="num">12%</td><td>Plants above 30 kW</td></tr>
+</table></div>
+
+<!-- ======================================================= QUIZ -->
+<h2 id="quiz">15. Quiz: check yourself</h2>
+<p>Click an answer. You'll see if it's right and why. Then try the open questions out loud before revealing the model answer.</p>
+<div class="score" id="score">Score: 0 / 0 <button class="reset" id="reset">Restart</button></div>
+<div id="quizbox"></div>
+
+<h3>Open questions (say your answer out loud, then reveal)</h3>
+<div id="openbox"></div>
+
+</main>
+
+<script>
+/* === QUIZ DATA: [question, options, index of right option, explanation] === */
+const Q = [
+ ["What is our outcome variable Y?",
+  ["The electricity tariff of each commune", "New solar installations per commune and year", "The share of homeowners", "Total solar capacity in Switzerland"], 1,
+  "Y = new PV installations per commune and year, from the SFOE plant register. In the analysis we use its growth: log(1 + n) after minus before."],
+ ["Why do we use the CHANGE in the tariff (2023 − 2022) rather than its level?",
+  ["Because levels are not published", "Because the change is the shock; permanent differences between communes drop out", "Because levels are always the same", "Because the change is easier to log"], 1,
+  "Communes with always-high tariffs differ in many ways. Using the change (and growth in Y) compares each commune with its own past."],
+ ["Why log(1 + n) and not log(n)?",
+  ["To make numbers smaller", "Because some communes have zero installations and log(0) doesn't exist", "Because the course requires it", "To remove outliers"], 1,
+  "log(0) is undefined. Adding 1 makes log(1 + 0) = 0, so communes with zero installations stay in."],
+ ["A village goes from 2 to 6 installations per year, a city from 200 to 260. Which reacted more, relatively?",
+  ["The city (+60)", "The village (tripled)", "Both the same", "Impossible to say"], 1,
+  "The village tripled (×3), the city grew ×1.3. Logs capture this: 0.85 vs 0.26 log points. That's why we use logs."],
+ ["Our slope is 0.24 log points per +10 ct. Roughly what percentage is that?",
+  ["0.24%", "2.4%", "About 27%", "About 240%"], 2,
+  "e^0.24 − 1 ≈ 0.27, so roughly 27% faster growth per +10 ct/kWh (approximate because of the +1)."],
+ ["Why do we leave out the year 2022?",
+  ["The data is missing", "Tariffs were published in August 2022, so 2022 is half before, half after", "Nothing happened in 2022", "It was an outlier year"], 1,
+  "The 2023 tariffs were announced in August 2022. Including 2022 would mix 'before' and 'after'. We compare 2017–21 with 2023–24."],
+ ["What does 'within cantons' mean in our analysis?",
+  ["We only use one canton", "We compare communes only to others in the same canton, by removing each canton's average", "We compare cantons with each other", "We drop small cantons"], 1,
+  "We subtract each canton's average from X and from growth, then fit a line. Equivalent to a regression with canton fixed effects."],
+ ["Why compare within cantons?",
+  ["Cantons have their own subsidies and building rules that could also affect solar", "Because the data is sorted by canton", "To get more observations", "Because cantons set tariffs"], 0,
+  "If a canton had both big increases and generous subsidies, we'd wrongly credit the tariff. Within-canton comparison holds cantonal policies fixed."],
+ ["'74% of the variance of X is within cantons' means:",
+  ["74% of communes had an increase", "Most differences in the price shock are between communes of the same canton", "74% of cantons had big increases", "The tariff rose by 74%"], 1,
+  "After removing canton averages, 74% of the spread remains. So comparing within cantons still leaves most of the variation."],
+ ["The high-shock third has a 2023 index of 290. This means:",
+  ["290 installations in 2023", "2.9 times its own 2021 level of installations", "29% more than the low third", "A tariff of 290 ct"], 1,
+  "Index = installations in the year ÷ installations in 2021 × 100. 290 = 2.9 times its 2021 level."],
+ ["Why use an index (2021 = 100) instead of raw totals for the thirds?",
+  ["The groups have different sizes, so we compare growth from each group's own level", "Raw totals are secret", "Indexes are more accurate", "To hide the 2025 drop"], 0,
+  "The groups contain different communes with different sizes. Indexing shows how each grew relative to itself."],
+ ["What's the main weakness of the thirds index chart?",
+  ["It ignores time", "It adds up installations, so big cities weigh much more", "It uses logs", "It only covers one canton"], 1,
+  "That's why slide 13 does a commune-by-commune analysis where each commune counts once."],
+ ["The 95% confidence interval for the slope is 0.20 to 0.28. What can we say?",
+  ["The true effect is exactly 0.24", "The relationship is very unlikely to be pure chance, because 0 is outside the interval", "The effect is causal", "The data has 28% error"], 1,
+  "A CI excluding 0 means statistically significant. It says nothing about causality."],
+ ["Why do we 'cluster by operator'?",
+  ["Operators asked us to", "Communes with the same operator got the same shock, so they aren't independent; without clustering we'd be over-confident", "To reduce the sample", "To make the slope bigger"], 1,
+  "495 operators ≈ 495 independent shocks, not 2,098. Clustering widens the CI accordingly."],
+ ["The placebo test gives 0.02 (CI −0.03 to 0.07). What does it tell us?",
+  ["The effect is small", "Before the shock, high-shock communes were NOT already growing faster: the pattern isn't an old trend", "The data is wrong", "Prices fell"], 1,
+  "Same X, but growth from 2017–18 to 2020–21. Zero means no pre-existing difference in trends, a key check."],
+ ["Which is the best reason our result is NOT yet causal?",
+  ["The sample is too small", "Operators chose the increases, and feed-in tariffs moved with them (r = 0.79)", "We used logs", "The CI is too wide"], 1,
+  "X wasn't random (endogeneity). Large operators raised less; feed-in tariffs moved together; everyone was treated by the crisis."],
+ ["What is 'endogeneity'?",
+  ["When Y is measured with error", "When X is linked to other factors that also affect Y, so we can't isolate X's effect", "When data is missing", "When a variable is in logs"], 1,
+  "Our X is endogenous because operators chose it, and it moved together with feed-in tariffs."],
+ ["In our setting, 'reverse causality' would mean:",
+  ["Higher prices caused fewer panels", "More solar caused higher tariffs (e.g. via grid fees)", "Owners caused prices", "2025 caused 2023"], 1,
+  "Self-consumption lowers billed kWh, which can push up grid fees. Unlikely here: tariffs were set in 2022, 87% of the increase was energy, and r = 0.03 with existing solar."],
+ ["Why did we keep the 17 communes with increases above 25 ct?",
+  ["We forgot to remove them", "They are real small utilities, not errors; deleting real data would bias results", "They make the slope bigger", "The course forbids removing outliers"], 1,
+  "We checked: they are genuine. We only cap the drawing at 25 ct for readability."],
+ ["Why is X kept in levels (no log)?",
+  ["Logs are only for Y", "It isn't very skewed, and some communes had small decreases (negative values can't be logged)", "ElCom forbids logs", "It is a count"], 1,
+  "Minimum X is −0.5 ct. log of a negative number doesn't exist."],
+ ["Why does Z (owner share) matter?",
+  ["Owners pay higher tariffs", "To install panels you need to own the roof; tenants depend on landlords", "Owners consume more electricity", "Z is required by ElCom"], 1,
+  "So we expect owner-heavy communes to react more. Feger et al. also find adopters are mostly homeowners."],
+ ["Why is the Z result (308 vs 237) only descriptive?",
+  ["Because the numbers are small", "A gap already existed in 2022, and owner share also tracks commune size and house type", "Because Z is from VESE", "Because it isn't significant at 5%"], 1,
+  "Above the median, 160 vs 139 already in 2022. And Z correlates −0.62 with population, 0.41 with single-family share."],
+ ["Why the H4 profile?",
+  ["It's the cheapest", "It's ElCom's standard household (5-room flat, 4,500 kWh/year), making tariffs comparable everywhere", "It's the only one available", "It includes feed-in"], 1,
+  "The same reference household everywhere. Other profiles (H2, H7) give an almost identical increase (correlation 0.99)."],
+ ["Why is the median sometimes better than the mean here?",
+  ["It's always better", "Y is skewed: a few huge cities pull the mean up, the median shows the typical commune", "The mean can't be computed", "The course requires it"], 1,
+  "2023–24: median 18.5, mean 28.4, max 484."],
+ ["What did Feger et al. (2022) find?",
+  ["Prices don't affect adoption", "Higher prices raise adoption, prices are more cost-efficient than subsidies, adopters are mostly richer homeowners", "Subsidies are useless", "Tenants adopt more"], 1,
+  "Their limit for us: very little price variation in their data."],
+ ["What is our gap in the literature?",
+  ["Nobody studied solar", "No solar study we found uses the 2023 Swiss jump, set by hundreds of operators, comparing communes within cantons", "Nobody studied Switzerland", "Nobody used maps"], 1,
+  "Each previous study had one narrow source of price variation (little variation, ten utilities, one border)."],
+ ["Which of these is NOT a limitation we mention?",
+  ["Z is from 2000", "The register records connection, not decision, dates", "Tariffs were set after the installations", "Commune averages, not households"], 2,
+  "It's the opposite: tariffs were set in August 2022, BEFORE the installations we count. That's our argument against reverse causality."],
+ ["'No untreated group' means:",
+  ["Some communes had no data", "Every commune lived through the crisis; we only compare more vs less affected communes", "No commune installed panels", "We didn't use a control variable"], 1,
+  "So we measure a short-run difference between communes, not the total effect of the crisis."]
+];
+
+/* === OPEN QUESTIONS: [question, model answer] === */
+const OPEN = [
+ ["Explain our study in 30 seconds.",
+  "In 2023 Swiss household electricity prices jumped, but by very different amounts between communes because each local operator set its own tariff. We test whether communes with bigger increases installed more solar panels. Within the same canton, a 10 ct bigger increase went with about 27% faster growth in installations, and there was no such pattern before the shock. But it's not yet causal, because operators chose the increases and feed-in tariffs moved too."],
+ ["Why do we use logs? Explain it to a friend.",
+  "Because communes are very different in size. A city adding 60 more panels and a village adding 4 more can't be compared in raw numbers: the village may have tripled while the city grew 30%. Logs measure relative growth, so a village and a city are compared fairly. We add 1 before the log because some communes had zero installations."],
+ ["Why can't we say the price CAUSED more solar?",
+  "Because the price increase wasn't random. Operators chose it (large operators raised less), the same operators changed feed-in tariffs at the same time (r = 0.79), and every commune lived through the crisis. So the link could partly come from these other things. We also have no commune that escaped the crisis."],
+ ["What is the placebo test and why is it important?",
+  "We run exactly the same analysis on a period before the shock (2017–18 to 2020–21). If high-shock communes were already growing faster for other reasons, we'd find a positive slope. We find 0.02, which is zero, so our 2023–24 pattern is not just a continuation of an old trend."],
+ ["What will we do for the final?",
+  "A year-by-year regression within cantons to see when the gap opens and test for pre-trends and anticipation; compare neighbouring communes with different operators; use Z as a continuous variable with better data; and try to separate the retail price from the feed-in tariff."],
+ ["Why did we pick these three papers, and what do they have in common?",
+  "All three study how electricity prices affect solar adoption using a real price change: a model with Swiss households (Feger), a natural experiment in Japan after Fukushima (Kiso), and the same 2022 crisis in Norway (Filippini & Garnache). They all find prices matter, but each relies on one narrow source of price variation. Our shock gives much more variation, inside cantons."]
+];
+
+/* === RENDER === */
+let answered = 0, right = 0;
+const box = document.getElementById("quizbox"), score = document.getElementById("score");
+function updateScore() { score.firstChild.nodeValue = `Score: ${right} / ${answered} (of ${Q.length}) `; }
+function render() {
+  box.innerHTML = ""; answered = 0; right = 0; updateScore();
+  Q.forEach(([stem, opts, ok, why], i) => {
+    const q = document.createElement("div"); q.className = "q";
+    q.innerHTML = `<div class="stem">${i + 1}. ${stem}</div>`;
+    opts.forEach((o, j) => {
+      const b = document.createElement("button"); b.className = "opt"; b.textContent = o;
+      b.onclick = () => {
+        if (q.classList.contains("done")) return;
+        q.classList.add("done"); answered++;
+        if (j === ok) { right++; b.classList.add("right"); } else { b.classList.add("wrong"); q.querySelectorAll(".opt")[ok].classList.add("right"); }
+        q.querySelectorAll(".opt").forEach(x => x.disabled = true); updateScore();
+      };
+      q.appendChild(b);
+    });
+    const w = document.createElement("div"); w.className = "why"; w.textContent = why; q.appendChild(w);
+    box.appendChild(q);
+  });
+}
+document.getElementById("reset").onclick = render;
+render();
+const ob = document.getElementById("openbox");
+OPEN.forEach(([q, a], i) => {
+  const d = document.createElement("div"); d.className = "q";
+  d.innerHTML = `<div class="stem">${i + 1}. ${q}</div>`;
+  const b = document.createElement("button"); b.className = "reveal"; b.textContent = "Show model answer";
+  const m = document.createElement("div"); m.className = "model"; m.textContent = a;
+  b.onclick = () => { m.classList.toggle("show"); b.textContent = m.classList.contains("show") ? "Hide" : "Show model answer"; };
+  d.appendChild(b); d.appendChild(m); ob.appendChild(d);
+});
+</script>
+</body>
+</html>
